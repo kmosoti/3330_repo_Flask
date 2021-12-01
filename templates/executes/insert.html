@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+{% block content%}
+<form action="/insertData" method="POST">
+    <div class="input-group">
+        <span class="input-group-text">Insert Artist</span>
+        <input type="text" aria-label="Full Name" placeholder="Enter Artist Full Name"class="form-control" name="a_name">
+        <input type="date" aria-label="Artist BirthDate" placeholder="Enter Artist BirthDate" class="form-control" name="a_birth">
+        <input type="text" aria-label="Commission Rate" placeholder="Enter Artist Commission Rate" class="form-control" name="commission">
+        <button  class="btn btn-primary" type="submit">Search</button>
+    </div>
+</form>
+{% endblock%}
