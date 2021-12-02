@@ -1,4 +1,10 @@
 {% extends 'base.html' %}
 {% block content%}
-
+<form action="/deleteRecord" method="POST">
+    <div class="input-group">
+        <span class="input-group-text">Delete Artist</span>
+        <input type="text" aria-label="Artist ID" placeholder="Enter Artist ID"class="form-control" name="aID">
+        <button  class="btn btn-primary" type="submit">Delete</button>
+    </div>
+</form>
 {% endblock%}

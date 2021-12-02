@@ -74,10 +74,13 @@ def insertData():
     print(type(a_birth))
     return render_template('displaytable.html', result=getRow, response=response)
 
-@app.route("/getQuery")
-def admin():
-    return redirect(url_for("Select"))
-
+@app.route("/deleteRecord", methods=["POST"])
+def deleteRecord():
+    aID = request.form.get("aID")
+    getRow = getData("SELECT * FROM [Art Gallery].dbo.ARTIST where aID = {}".format(aID))
+    deleteRecord(aID)
+    response = "Deleted Artist With ID = {}".format(aID)
+    return render_template('displaytable.html', result=getRow, response=response)
 if __name__ == "__main__":
     app.run()
 
@@ -87,23 +90,31 @@ def getData(query):
     cursor.execute(query)
     result = cursor.fetchall()
     cursor.close()
+    print(query)
     return result
 
 def insertData(aID, name, birthDate, commission):
     cnxn = pyodbc.connect('DRIVER={ODBC Driver 17 for SQL Server};SERVER='+server+';DATABSE='+database+';UID='+username+';PWD='+password)
     cursor = cnxn.cursor()
     sqlInsert = "INSERT INTO [Art Gallery].dbo.ARTIST(aID, name, birthDate, deathDate, commission, street, city, stateAB, zipcode) VALUES"
-    sqlValues = f"({aID},'{name}','{birthDate}',NULL,'{commission}',NULL,NULL,'TX','76621-0057')"
-    finalQuery = sqlInsert+"(159,'Kennedy Mosoti','1975-04-16',NULL,'15',NULL,NULL,'TX','76621-0057')"
+    sqlValues = f"({aID},'{name}','{birthDate}',NULL,'{commission}','','','TX','76621-0057')"
+    finalQuery = sqlInsert+sqlValues
     print("\n\n"+finalQuery+"\n\n")
     cursor.execute(finalQuery)
     cursor.commit()
 
+def deleteRecord(aID):
+    cnxn = pyodbc.connect('DRIVER={ODBC Driver 17 for SQL Server};SERVER='+server+';DATABSE='+database+';UID='+username+';PWD='+password)
+    cursor = cnxn.cursor()
+    sqlDelete  = "DELETE FROM [Art Gallery].dbo.ARTIST WHERE aID = '{}'".format(aID)
+    print("\n\n"+sqlDelete+"\n\n")
+    cursor.execute(sqlDelete)
+    cursor.commit()
 
 def getID(quest):
     aID = randint(0,200)
     if aID in quest:
-        getID(aID)
+        aID=getID(aID)
         
     return aID
 
