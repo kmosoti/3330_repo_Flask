@@ -78,8 +78,21 @@ def insertData():
 def deleteRecord():
     aID = request.form.get("aID")
     getRow = getData("SELECT * FROM [Art Gallery].dbo.ARTIST where aID = {}".format(aID))
-    deleteRecord(aID)
+    deleteRecordCall(aID)
     response = "Deleted Artist With ID = {}".format(aID)
+    return render_template('displaytable.html', result=getRow, response=response)
+if __name__ == "__main__":
+    app.run()
+
+@app.route("/updateRecord", methods=["POST"])
+def updateRecord():
+    aID = request.form.get("aID")
+    newValue = request.form.get("newVal")
+    attribute = request.form.get("attribute")
+
+    updateRecordCall(aID,newValue,attribute)
+    getRow = getData("SELECT * FROM [Art Gallery].dbo.ARTIST where aID = {}".format(aID))
+    response = f"Update Artist[{aID}] {attribute} to {newValue}"
     return render_template('displaytable.html', result=getRow, response=response)
 if __name__ == "__main__":
     app.run()
@@ -103,12 +116,20 @@ def insertData(aID, name, birthDate, commission):
     cursor.execute(finalQuery)
     cursor.commit()
 
-def deleteRecord(aID):
+def deleteRecordCall(aID):
     cnxn = pyodbc.connect('DRIVER={ODBC Driver 17 for SQL Server};SERVER='+server+';DATABSE='+database+';UID='+username+';PWD='+password)
     cursor = cnxn.cursor()
     sqlDelete  = "DELETE FROM [Art Gallery].dbo.ARTIST WHERE aID = '{}'".format(aID)
     print("\n\n"+sqlDelete+"\n\n")
     cursor.execute(sqlDelete)
+    cursor.commit()
+
+def updateRecordCall(aID,newVal,attribute):
+    cnxn = pyodbc.connect('DRIVER={ODBC Driver 17 for SQL Server};SERVER='+server+';DATABSE='+database+';UID='+username+';PWD='+password)
+    cursor = cnxn.cursor()
+    sqlUpdate = f"UPDATE [Art Gallery].dbo.ARTIST SET [{attribute}] = '{newVal}' WHERE aID = '{aID}'"
+    print("\n\n"+sqlUpdate+"\n\n")
+    cursor.execute(sqlUpdate)
     cursor.commit()
 
 def getID(quest):

@@ -1,4 +1,15 @@
 {% extends 'base.html' %}
 {% block content%}
-
+<form action="/updateRecord" method="POST">
+    <select class="form-select" aria-label="Default select example" name="attribute">
+        <option selected>Select Attribute to Update</option>
+        <option value="name">Name</option>
+        <option value="street">Street</option>
+        <option value="city">City</option>
+        <option value="zipCode">Zip Code</option>
+    </select>
+    <input type="text" aria-label="New Value" placeholder="Enter New Value"class="form-control" name="newVal">
+    <input type="text" aria-label="Artist ID" placeholder="Enter Artist ID"class="form-control" name="aID">
+    <button  class="btn btn-primary" type="submit">UPDATE</button>
+</form>
 {% endblock%}
