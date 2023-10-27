@@ -6,7 +6,7 @@ from random import randint
 server = 'art-gallery.cphddxev4bq9.us-east-2.rds.amazonaws.com'
 database = 'Art Gallery'
 username = 'UTAStudent05'
-password = '3asy-123'
+password = 
 
 app = Flask(__name__)
 
